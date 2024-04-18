@@ -4,6 +4,7 @@ from faicons import icon_svg
 from shiny import reactive
 from shiny.express import input, render, ui
 import palmerpenguins 
+from shinywidgets import render_plotly
 
 #The lines below are used to import and change the font
 
@@ -92,18 +93,6 @@ with ui.layout_column_wrap(fill=False):
             return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm"
 
 
-with ui.layout_columns():
-    with ui.card(full_screen=True):
-        ui.card_header("Bill length and depth")
-
-        @render.plot
-        def length_depth():
-            return sns.scatterplot(
-                data=filtered_df(),
-                x="bill_length_mm",
-                y="bill_depth_mm",
-                hue="species",
-            )
 
     with ui.card(full_screen=True):
         ui.card_header("Penguin data")
@@ -118,6 +107,18 @@ with ui.layout_columns():
                 "body_mass_g",
             ]
             return render.DataGrid(filtered_df()[cols], filters=True)
+
+ui.input_selectize(
+    "var", "Select variable",
+    choices=["bill_length_mm", "body_mass_g"]
+)
+
+@render_plotly
+def hist():
+    import plotly.express as px
+    from palmerpenguins import load_penguins
+    df = load_penguins()
+    return px.histogram(df, x=input.var())
 
 
 #ui.include_css(app_dir / "styles.css")
