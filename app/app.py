@@ -5,6 +5,27 @@ from shiny import reactive
 from shiny.express import input, render, ui
 import palmerpenguins 
 
+#The lines below are used to import and change the font
+
+ui.tags.link(
+    rel="stylesheet",
+    href="https://fonts.googleapis.com/css?family=Roboto"
+)
+
+ui.tags.style(
+    "body { font-family: 'Roboto', sans-serif; }"
+)
+
+#AI is not well versed on coding in Shiny. So, the most useful resource I have found is this website: https://shiny.posit.co/py/
+
+#AI can be useful if you already have some of your code written and are asking it to correct and issue
+
+#It can be frustrating but don't give up. Take a break from the screen if you're getting hung up on something. The frustration will only make it harder to think clearer and find a solution. 
+
+#Don't forget that even the smallest mistake can throw off the whole code: incorrect indentation, missing punctuation, incorrect capitalization, etc. 
+
+
+
 df = palmerpenguins.load_penguins()
 
 ui.page_opts(title="Penguins dashboard", fillable=True)
@@ -49,21 +70,21 @@ with ui.sidebar(title="Filter controls"):
 
 
 with ui.layout_column_wrap(fill=False):
-    with ui.value_box(showcase=icon_svg("earlybirds")):
+    with ui.value_box(showcase=icon_svg("earlybirds"), style="color:blue"):
         "Number of penguins"
 
         @render.text
         def count():
             return filtered_df().shape[0]
 
-    with ui.value_box(showcase=icon_svg("ruler-horizontal")):
+    with ui.value_box(showcase=icon_svg("ruler-horizontal"), style="color:blue"):
         "Average bill length"
 
         @render.text
         def bill_length():
             return f"{filtered_df()['bill_length_mm'].mean():.1f} mm"
 
-    with ui.value_box(showcase=icon_svg("ruler-vertical")):
+    with ui.value_box(showcase=icon_svg("ruler-vertical"), style="color:blue"):
         "Average bill depth"
 
         @render.text
